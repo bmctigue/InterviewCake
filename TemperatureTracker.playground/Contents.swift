@@ -50,7 +50,7 @@ struct TemperatureTracker {
         return mode
     }
     
-    mutating func updateModeHash(hash: [Int:Int], temp: Int) -> (Int,[Int:Int]) {
+    private mutating func updateModeHash(hash: [Int:Int], temp: Int) -> (Int,[Int:Int]) {
         var hash = hash
         var tempCount: Int? = hash[temp]
         if tempCount == nil {
