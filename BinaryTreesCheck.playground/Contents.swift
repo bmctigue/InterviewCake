@@ -36,7 +36,7 @@ class Node: NodeProtocol {
     }
     
     func insert(data: Int) {
-        if data >= self.data {
+        if data > self.data {
             if rightNode == nil {
                 rightNode = Node(data: data)
             } else {
@@ -104,34 +104,40 @@ class Node: NodeProtocol {
         return (low,high)
     }
     
-    func valid(valid: Bool) -> Bool {
+    func valid(valid: Bool, limit: Int) -> (Bool,Int) {
         var valid = valid
+        var limit = limit
+        
+        print("node: \(data)")
+        print("limit: \(limit)")
+        
+        if !valid {
+            return (false,limit)
+        }
+        
         if leftNode == nil && rightNode == nil {
-            return true
+            return (true,limit)
         }
         
         if leftNode != nil {
-            if !valid {
-                return valid
-            }
-            if leftNode!.data >= self.data {
-                return false
+//            leftNode!.data = leftNode!.data == 10 ? 4 : leftNode!.data
+            let maxValidLeft = data <= limit ? leftNode!.data <= limit : leftNode!.data > limit
+            if leftNode!.data <= data && maxValidLeft {
+                (valid,limit) = leftNode!.valid(valid: valid, limit: limit)
             } else {
-                valid = leftNode!.valid(valid: valid)
+                return (false,limit)
             }
         }
         if rightNode != nil {
-            if !valid {
-                return valid
-            }
-            if rightNode!.data < self.data {
-                return false
+//            rightNode!.data = rightNode!.data == 3 ? 6 : rightNode!.data
+            let maxValidRight = data >= limit ? rightNode!.data > limit : rightNode!.data <= limit
+            if rightNode!.data > data && maxValidRight {
+                (valid,limit) = rightNode!.valid(valid: valid, limit: limit)
             } else {
-                valid = rightNode!.valid(valid: valid)
+                return (false,limit)
             }
         }
-        
-        return valid
+        return (valid,limit)
     }
 }
 
@@ -178,24 +184,14 @@ struct BinaryTree {
     }
     
     func valid() -> Bool {
-        return (root?.valid(valid: true))!
+        var valid: Bool = true
+        var limit = (root?.data)!
+        (valid,limit) = (root?.valid(valid: true, limit: limit))!
+        return valid
     }
 }
 
 let tree = BinaryTree(root:node)
-tree.root?.data
-
-// find
-//var result = tree.find(data: 5)
-//result?.data
-//result = tree.find(data: 9)
-//result?.data
-
-// insert
-//tree.insert(data: 10)
-//result = tree.find(data: 10)
-//result?.data
-
 tree.insert(data: 2)
 tree.insert(data: 1)
 tree.insert(data: 3)
@@ -205,20 +201,6 @@ tree.insert(data: 13)
 tree.insert(data: 10)
 tree.insert(data: 12)
 tree.insert(data: 14)
-
-
-// height
-//tree.height()
-
-// superbalanced
-//tree.unBalanced()
-
-// valid
 tree.valid()
-
-// delete
-//tree.delete(data: 10)
-//result = tree.find(data: 10)
-//result?.data
 
 
