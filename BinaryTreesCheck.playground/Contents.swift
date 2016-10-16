@@ -133,7 +133,6 @@ class Node: NodeProtocol {
         
         return valid
     }
-    
 }
 
 let node = Node(data: 5)
