@@ -2,7 +2,8 @@
 
 import UIKit
 
-func findClosing(stringArray: [String]) -> Bool {
+func findClosing(message: String) -> Bool {
+    var stringArray = message.characters.map{String($0)}
     var stack: [String] = []
     var endIndex: Int = 0
     var tempChar = ""
@@ -33,5 +34,4 @@ var message = "{[]()}"
 //message = "{[}"
 //message = "{"
 //message = "{}"
-var messageArray = message.characters.map{String($0)}
-findClosing(stringArray: messageArray)
+findClosing(message: message)
